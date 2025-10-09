@@ -28,6 +28,6 @@ btn.addEventListener("click", ()=>{
 
 display.style.cssText="color:red;background:black";
 control.textContent="Twayihinduye"
-control.innerHTML="<button>Click me</button>"
+control.innerHTML=" "
 
 })
