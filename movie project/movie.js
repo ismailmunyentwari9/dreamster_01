@@ -1,28 +1,31 @@
-let container =document.getElementById("#container")
+let movieContainer = document.querySelector(".movie-container");
 
-async function loadmovies (){
-try{
-    
-    const response = await fetch("./movie.json");
-const movies = await response.json();
+async function loadMovie(){
 
-     
+try {
+// ........all process
+const movies = await fetch("./movie.json");
+const jsonMovie = await movies.json();
 
-movies.forEach(data =>{
-   let movie= `
+jsonMovie.forEach(item=>{
+    let movieCard=`
      <div class="movie-card w-[25%]">
 
-        <img src="${data.Images[1]}" alt="">
-        <p><span class="text-red-700 text-[10px]">Title:${data.Title}</span></p>
-        <p><span class="text-red-700 text-[10px]">Year:${data.Year}</span></p>
-        <span class="text-red-700 text-[10px]">Rated: ${data.Rated}</span>
+        <img src="${item.Images[0]}" alt="">
+        <p><span class="text-red-700 text-[10px]">Title:${item.Title}</span></p>
+        <p><span class="text-red-700 text-[10px]">Year:${item.Year}</span></p>
+        <span class="text-red-700 text-[10px]">Rated: ${item.Rated}</span>
     </div>
     `;
-    container.innerHTML+=movie;
+    movieContainer.innerHTML +=movieCard;
 })
-} catch (err){
-    console.log("we have erro")
-}
+
+
+}catch(theErroe){
+//display error.........
+console.log(theErroe)
 }
 
-loadmovies();
+
+};
+loadMovie();
