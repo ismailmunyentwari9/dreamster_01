@@ -9,7 +9,7 @@ const jsonMovie = await movies.json();
 
 jsonMovie.forEach(item=>{
     let movieCard=`
-     <div class="movie-card w-[25%]">
+     <div class="movie-card w-[25%] border-7 border-white">
 
         <img src="${item.Images[0]}" alt="">
         <p><span class="text-red-700 text-[10px]">Title:${item.Title}</span></p>
