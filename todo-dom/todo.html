@@ -1,0 +1,27 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <title>Todo-List 📚</title>
+</head>
+<body>
+    <div class="h-[50vh] w-[90%] mx-auto mt-[4rem] border-3 ">
+
+        <h1 class="text-[30px] text-center text-blue-800 mt-2">Todo-Lists 📚 ✏</h1>
+
+        <div class="flex flex-col  items-center mt-4">
+           <div class="flex gap-2 justify-center">
+             <input id="value" type="text"  placeholder="Add your Tod" class="border-2 text-[25px] rounded-lg"> 
+            <button id="triggle" class="bg-blue-400 px-12 py-2 text-white text-xl rounded-xl">Save</button>
+           </div>
+
+            <div id="list-container"  class="mt-4  w-[50%]" >
+
+            </div>
+        </div>
+
+    </div>
+</body>
+<script src="./todo.js"></script>
+</html>
