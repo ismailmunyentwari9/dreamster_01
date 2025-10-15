@@ -1,86 +1,88 @@
 const container = document.querySelector("#list-container");
-const InputValue = document.querySelector("#value");
-const btn =document.querySelector("#triggle");
+const input = document.querySelector("#value");
+const btn = document.querySelector("#triggle");
 
 
-btn.addEventListener('click',()=>{
-    const todoItem = InputValue.value.trim(); 
-        if(todoItem !==""){
-             const ul = document.createElement("ul");
-     const checkBox = document.createElement("input");
-           checkBox.type="checkbox";
-           
-           ul.classList.add("flex","justify-between");
-           
-     const li = document.createElement("li");
-     const deleteBtn=document.createElement("span");
-     const editBtn = document.createElement("span");
-     const iconBox = document.createElement("span");
-     iconBox.classList.add("flex","justify-end");
-     editBtn.textContent="🖊";
-    deleteBtn.textContent="🗑";
-    deleteBtn.classList.add("cursor-pointer")
-    editBtn.classList.add("cursor-pointer")
 
-     li.textContent=todoItem;
-     ul.appendChild(checkBox);
-     ul.appendChild(li);
-     iconBox.appendChild(deleteBtn);
-     iconBox.appendChild(editBtn);
-      ul.appendChild(iconBox);
-    container.appendChild(ul);
+btn.addEventListener("click", () => {
+  const taskValue = input.value.trim();
+  if (taskValue !== "") {
+    const division = document.createElement("div");
+    const checkBox = document.createElement("input");
+    checkBox.type = "checkbox";
+    const listItem = document.createElement("span");
+    listItem.textContent = taskValue;
+    const deleteBtn = document.createElement("span");
+    deleteBtn.textContent = "🗑";
+    const editBtn = document.createElement("span");
+    editBtn.textContent = "🖊";
 
+    //  .............Append childs to all containers...........
+    division.appendChild(checkBox);
+    division.appendChild(listItem);
+    division.appendChild(deleteBtn);
+    division.appendChild(editBtn);
+    container.appendChild(division);
+    input.value = "";
 
-markAsDone(checkBox,li);
-removeItem(checkBox,ul,deleteBtn);
-editItem(editBtn,ul,li);
-InputValue.value="";
-        }
-        else{
-            alert("Please  Enter Task First")
-        }
+    markDone(checkBox, listItem);
+    deleteItem(checkBox, division, deleteBtn);
+    editItem(editBtn, division, listItem);
+  }
+  else {
+    alert("Please  Add your To-do List First ☺");
+  }
+
 
 })
 
+// Mark As done.....
+const markDone = (Box, todo) => {
+  Box.addEventListener("change", () => {
 
-
-const markAsDone =(checkBox,li)=>{
- checkBox.addEventListener("change",()=>{
-    
-     if(checkBox.checked){
-        li.classList.add("line-through");
-     }
-     else{
-     li.classList.remove("line-through");
-     }
- })
+    if (Box.checked == true) {
+      todo.classList.add("line-through");
+    }
+    else {
+      todo.classList.remove("line-through");
+    }
+  })
 }
 
-const removeItem=(checkBox,ul,deleteBtn)=>{
-         deleteBtn.addEventListener("click",()=>{
-              if(checkBox.checked){
-                 container.removeChild(ul);
-              }
-         })
+
+// delete funtionality.....
+
+const deleteItem = (checkBox, division, deleteBtn) => {
+  deleteBtn.addEventListener("click", () => {
+
+    if (checkBox.checked == true) {
+      container.removeChild(division);
+    }
+    else {
+      alert("Only completed task can be deleted");
+    }
+  })
+  console.log("deleteItem");
 }
-const editItem=(editBtn,ul,li)=>{
-     editBtn.addEventListener("click",()=>{
+
+// edit functionality.................
+
+const editItem = (editBtn, division, listItem) => {
+  editBtn.addEventListener("click", () => {
     const tempInput = document.createElement("input");
-      tempInput.type="text";
-      tempInput.value=li.textContent;
-      ul.replaceChild(tempInput,li);   
-      
-      tempInput.addEventListener("keypress",(event)=>{
-      if(event.key==="Enter"){
-        li.textContent=tempInput.value;
-        ul.replaceChild(li,tempInput);  
+    tempInput.type = "text";
+    tempInput.value = listItem.textContent;
+    division.replaceChild(tempInput, listItem);
+
+    tempInput.addEventListener("keypress", (event) => {
+
+      if (event.key === "Enter") {
+        listItem.textContent = tempInput.value;
+        division.replaceChild(listItem, tempInput);
       }
-      })
-})
+    }
+    )
+
+  })   
 }
 
-
-// ..............calling functions............
-markAsDone();
-removeItem();
-editItem();

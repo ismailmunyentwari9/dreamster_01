@@ -1,0 +1,140 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <title>Todo List</title>
+</head>
+
+<body>
+
+    <div class="w-[70%] border-2 mx-auto h-[70vh] mt-10">
+        <div class="flex justify-center items-center mt-10">
+            <input type="text" placeholder="Enter your Task" id="task-value" class="border-2 text-xl">
+            <button class="border-2 bg-orange-600 text-white px-5 py-2 text-2xl rounded-xl" id="button">Save</button>
+        </div>
+
+        <div id="list-container"></div>
+    </div>
+
+    <script>
+        const container = document.querySelector("#list-container");
+        const btn = document.querySelector("#button");
+        const inputValue = document.querySelector("#task-value");
+
+        // Array to store tasks (will be synced with localStorage)
+        let arrayTask = JSON.parse(localStorage.getItem("value")) || [];
+
+        // Function to add tasks to the DOM
+        const addTask = (tasks) => {
+            container.innerHTML = ""; // Clear container before rendering
+
+            tasks.forEach(taskText => {
+                // Create task row
+                const ul = document.createElement("ul");
+                ul.classList.add("flex", "gap-2", "items-center", "my-2");
+
+                // Create task elements
+                const li = document.createElement("li");
+                li.textContent = taskText;
+
+                const checkBox = document.createElement("input");
+                checkBox.type = "checkbox";
+
+                const deleteBtn = document.createElement("span");
+                deleteBtn.textContent = "🗑";
+                deleteBtn.classList.add("cursor-pointer");
+
+                const editBtn = document.createElement("span");
+                editBtn.textContent = "🖊";
+                editBtn.classList.add("cursor-pointer");
+
+                // Append elements to UL
+                ul.appendChild(checkBox);
+                ul.appendChild(li);
+                ul.appendChild(deleteBtn);
+                ul.appendChild(editBtn);
+
+                // Append UL to container
+                container.appendChild(ul);
+
+                // Add functionalities
+                deleteDoneLists(container, deleteBtn, checkBox, ul, li);
+                UpdateLists(ul, editBtn, li);
+                markAsDone(checkBox, li);
+            });
+
+            inputValue.value = ""; // Clear input after adding
+        };
+
+        // Function to mark task as done
+        const markAsDone = (checkbox, li) => {
+            checkbox.addEventListener("change", () => {
+                li.classList.toggle("line-through", checkbox.checked);
+            });
+        };
+
+        // Function to delete checked tasks
+        const deleteDoneLists = (container, deleteBtn, checkbox, ul, li) => {
+            deleteBtn.addEventListener("click", () => {
+                if (checkbox.checked) {
+                    // Remove from DOM
+                    container.removeChild(ul);
+
+                    // Remove from arrayTask and update localStorage
+                    arrayTask = arrayTask.filter(t => t !== li.textContent);
+                    localStorage.setItem("value", JSON.stringify(arrayTask));
+                } else {
+                    alert("We only remove checked Lists");
+                }
+            });
+        };
+
+        // Function to edit a task
+        const UpdateLists = (ul, editBtn, li) => {
+            editBtn.addEventListener("click", () => {
+                const newInput = document.createElement("input");
+                newInput.type = "text";
+                newInput.classList.add("border-2", "border-red-300", "text-red-500");
+                newInput.value = li.textContent;
+
+                ul.replaceChild(newInput, li);
+
+                newInput.addEventListener("keypress", (e) => {
+                    if (e.key === "Enter") {
+                        li.textContent = newInput.value;
+
+                        // Update arrayTask and localStorage
+                        const index = arrayTask.indexOf(li.textContent);
+                        if (index > -1) arrayTask[index] = newInput.value;
+                        localStorage.setItem("value", JSON.stringify(arrayTask));
+
+                        ul.replaceChild(li, newInput);
+                    }
+                });
+            });
+        };
+
+        // Event listener for adding new task
+        btn.addEventListener("click", () => {
+            const task = inputValue.value.trim();
+
+            if (task !== "") {
+                arrayTask.push(task); // Add task to array
+                localStorage.setItem("value", JSON.stringify(arrayTask)); // Update localStorage
+                addTask(arrayTask); // Render tasks
+            } else {
+                alert("Please Add task first");
+            }
+        });
+
+        // Load tasks from localStorage on page load
+        window.addEventListener("load", () => {
+            addTask(arrayTask);
+        });
+
+    </script>
+</body>
+
+</html>
