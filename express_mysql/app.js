@@ -66,5 +66,55 @@ app.post('/add',(req,resp)=>{
            
         })
 
+        app.post('/delete/:student_id',(req,resp)=>{
+            // console.log(req.params);
+            const studentId= req.params.student_id;
+            const sql=`DELETE FROM students WHERE student_id=${studentId}`
+            db.query(sql,(err)=>{
+                if(err){
+                    console.log("Failed to delete student");
+                    return;
+                }
+                else{
+                    resp.redirect('/datas');
+                }
+            })
+        })
+
+
+        app.post('/update/:student_id',(req,resp)=>{
+            const studentId =req.params.student_id;
+            const sql =`SELECT * FROM students WHERE student_id =${studentId}`;
+            db.query(sql,(err,dataSelected)=>{
+               if(err){
+                console.log("failed to fetach db datas");
+               }
+               else{
+                resp.render('updateForm',{dataSelected});
+               }
+            })
+        })
+
+        app.get('/update',(req,resp)=>{
+            resp.render('updateForm')
+        })
+
+
+        app.post('/updated/:id',(req,resp)=>{
+            const id =req.params.id;
+            const {names,email,age,grade}=req.body
+            const sql =`UPDATE students SET names='${names}',email='${email}',age='${age}',grade='${grade}' WHERE student_id=${id}`;
+
+            db.query(sql,(err)=>{
+                if(err){
+                    console.log('FAILED TO UPDATE STUDENT');
+                    return;
+                }
+                else{
+                    resp.redirect('/datas');
+                }
+            })
+        })
+
 
 app.listen(3000,console.log('Im listening on Port 3k'));

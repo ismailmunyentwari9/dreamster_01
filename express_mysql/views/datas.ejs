@@ -1,13 +1,46 @@
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Document</title>
+    <style>
+        tr:nth-child(even){
+           background-color: black;
+           color: white;
+        }
+        table{
+           
+            width: 70%;
+            margin: auto;
+        }
+    </style>
 </head>
+
 <body>
-    
-    <div>
-        <span>Names:</span><span><%=results.names%></span>
-    </div>
+    <table border="1" style="border-collapse: collapse;">
+        <tr>
+            <th>Names</th>
+            <th>Email</th>
+            <th>Age</th>
+            <th>Grade</th>
+            <th colspan="2">Action</th>
+        </tr>
+        <%results.forEach(row=>{%>
+
+            <tr>
+                <td><%=row.names%></td>
+                <td><%=row.email%></td>
+                <td><%=row.age%></td>
+               <td><%=row.grade%></td>
+               <td><form action="/delete/<%=row.student_id%>" method="post"><button>Delete</button></form></td>
+                           <td><form action="/update/<%=row.student_id%>" method="post"><button>Update</button></form></td>
+            </tr>
+
+
+            <%})%>
+    </table>
 </body>
+
 </html>
