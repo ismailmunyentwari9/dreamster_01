@@ -13,7 +13,7 @@ const db =mysql.createConnection({
     host:'localhost',
     user:'root',
     password:'',
-    database:'student_db'
+    database:'dreamize'
 });
 
 db.connect( err=>{
@@ -112,6 +112,39 @@ app.post('/add',(req,resp)=>{
                 }
                 else{
                     resp.redirect('/datas');
+                }
+            })
+        })
+
+        app.post('/course/:id',(req,resp)=>{
+            const id = req.params.id;
+            resp.render('addcourse',{id});
+
+        })
+        app.post('/addcourse',(req,resp)=>{
+            // console.log(req.body);
+            const{student_id,coursename,duration}=req.body;
+            const sql =`INSERT INTO courses VALUES(NULL,${student_id},'${coursename}','${duration}')`;
+            db.query(sql,(err)=>{
+                if(err){
+                    console.log("Failed To add Course",err);
+                     
+                }
+                else{
+                    console.log("Course Added Successfuly..");
+                    resp.redirect('courses');
+                }
+            })
+        })
+
+        app.get('/courses',(req,resp)=>{
+            const sql=`SELECT * FROM courses`;
+            db.query(sql,(err,results)=>{
+                if(err){
+                    console.log("Failed To fetch courses from DB");
+                }
+                else{
+                    resp.render('courses',{results});
                 }
             })
         })

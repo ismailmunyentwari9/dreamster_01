@@ -1,0 +1,45 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Document</title>
+    <style>
+        tr:nth-child(even){
+           background-color: black;
+           color: white;
+        }
+        table{
+           
+            width: 70%;
+            margin: auto;
+        }
+    </style>
+</head>
+
+<body>
+    <table border="1" style="border-collapse: collapse;">
+        <tr>
+            <th>StudentID</th>
+        
+            <th>Course Name</th>
+            <th>Course Duration</th>
+           
+        </tr>
+        <%results.forEach(row=>{%>
+
+            <tr>
+                <td><%=row.studentID%></td>
+                <td><%=row.courseName%></td>
+                <td><%=row.courseDuration%></td>
+               <td><form action="/delete/<%=row.student_id%>" method="post"><button>Delete</button></form></td>
+                    
+            </tr>
+
+
+            <%})%>
+    </table>
+</body>
+
+</html>

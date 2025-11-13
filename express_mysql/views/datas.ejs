@@ -30,12 +30,13 @@
         <%results.forEach(row=>{%>
 
             <tr>
-                <td><%=row.names%></td>
-                <td><%=row.email%></td>
+                <td><%=row.name%></td>
+        
                 <td><%=row.age%></td>
                <td><%=row.grade%></td>
                <td><form action="/delete/<%=row.student_id%>" method="post"><button>Delete</button></form></td>
                            <td><form action="/update/<%=row.student_id%>" method="post"><button>Update</button></form></td>
+                           <td><form action="/course/<%=row.student_id%>" method="post"><button>Course</button></form></td>
             </tr>
 
 
